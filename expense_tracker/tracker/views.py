@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from .models import Expense
 from .forms import ExpenseForm
+from django.db.models import Sum
 
 
 def expense_list(request):
@@ -16,14 +17,16 @@ def expense_list(request):
     if date_filter:
         expenses = expenses.filter(date=date_filter)
 
- 
+    total_amount = expenses.aggregate(total=Sum('amount'))['total'] or 0
+
     categories = Expense.objects.values_list('category', flat=True).distinct()
     static_categories = ['Food', 'Transport', 'Utilities', 'Other']
     categories = list(set(categories) | set(static_categories)) 
 
     return render(request, 'tracker/expense_list.html', {
         'expenses': expenses,
-        'categories': categories
+        'categories': categories,
+        'total_amount': total_amount
     })
 
 # Add new expense

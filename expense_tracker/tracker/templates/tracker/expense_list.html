@@ -33,12 +33,17 @@
     <ul class="list-group">
         {% for expense in expenses %}
             <li class="list-group-item">
-                <strong>{{ expense.date }}</strong>: {{ expense.category }} - ${{ expense.amount }}
+                <strong>{{ expense.date }}</strong>: {{ expense.category }} - ₱{{ expense.amount }}
                 
                 <a href="{% url 'update_expense' expense.id %}" class="btn btn-warning btn-sm float-end ms-2">Update</a>
                 <a href="{% url 'delete_expense' expense.id %}" class="btn btn-danger btn-sm float-end">Delete</a>
             </li>
         {% endfor %}
     </ul>
+        
+        <div class="mt-4">
+            <h3>Total Expenses: ₱{{ total_amount }}</h3>
+        </div>
+    
 </body>
 </html>
